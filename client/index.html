@@ -16,7 +16,8 @@
         if (newSearch !== '' & newSearch !== '?') {
           newSearch += '&';
         }
-        newSearch += 'username=' + (prompt('What is your name?') || 'anonymous');
+        var name = prompt('What is your name?') || 'anonymous';
+        newSearch += 'username=' + name;
         window.location.search = newSearch;
       }
     </script>
@@ -39,7 +40,7 @@
       </div> -->
     </div>
     
-      <input class="draft" type="text"/> <button class="send">Send</button> 
+      <input id="message" type="text"/> <button class="send">Send</button> 
       <br>
       <button class="retrieve">Retrieve</button>
 

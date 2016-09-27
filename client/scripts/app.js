@@ -11,10 +11,22 @@ var app = {
 
 
   init: function () {
-
+    this.fetch();
   },
 
-  send: function (message) { 
+  callback: function() {
+    var message = {
+      username: name,
+      text: $('#message').val(),
+      roomname: 'default'
+    };
+
+    return message;
+  },
+
+  send: function (input) {
+    
+    var message = input ? input : this.callback();
 
     $.ajax({
       url: this.mainURL,
@@ -23,17 +35,19 @@ var app = {
       data: JSON.stringify(message),
       success: function (data) {
         console.log('chatterbox: Message sent \n\n' + JSON.stringify(message));
+        $('#message').val('');
       }
     });
-   },
+  },
 
   fetch: function () {
     $.ajax({
       url: this.server,
       type: 'GET',
-      // dataType: 'json',
-      // data: {param1: 'value1'},
       success: function (data) {
+        console.log(data);
+        app.clearMessages();
+        console.log(data);
         for (var i = 0; i < data.results.length; i++) {
           app.renderMessage(data.results[i]);
         }
@@ -46,12 +60,16 @@ var app = {
   }, 
 
   renderMessage: function(message) {
-    $('#chats').append('<div>' + message.username + ": " + 
+    $('#chats').append('<div><a href="#">' + message.username + '</a>: ' + 
                         message.text + '</div>');
   }, 
 
   renderRoom: function(room) {
     $('#roomSelect').append('<a class="' + room + '"></a>');
+  },
+
+  handleSubmit: function() {
+    app.send();
   }
 
 };
@@ -61,8 +79,10 @@ var app = {
 // document must be loaded completely before manipulating the DOM
 $(document).ready( function () {
 
+  app.init();
+
   $('.send').click( function () {
-    app.send(app.testMessage);
+    app.handleSubmit();
   });
 
 
