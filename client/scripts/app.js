@@ -3,13 +3,9 @@ var app = {
   mainURL: 'https://api.parse.com/1/classes/messages',
   server: 'https://api.parse.com/1/classes/messages?order=-createdAt',
 
-  testMessage: {
-    username: 'Test123',
-    text: 'This is a test',
-    roomname: 'lobby'
-  },
+  friends: [],
 
-
+ 
   init: function () {
     this.fetch();
   },
@@ -60,8 +56,26 @@ var app = {
   }, 
 
   renderMessage: function(message) {
-    $('#chats').append('<div><a href="#">' + message.username + '</a>: ' + 
-                        message.text + '</div>');
+    var messageArray = message.text.split('');
+    var messageToPost = [];
+    for (var i = 0; i < messageArray.length; i++) {
+      if (messageArray[i] !== '<') {
+        messageToPost.push(messageArray[i]);
+      }
+    }
+
+    messageToPost = messageToPost.join('');
+    
+    if (app.friends.includes(message.username)) {
+      $('#chats').append('<div><a href="javascript:void(0)"><strong>' + 
+                        message.username + '</strong></a>: ' + 
+                        messageToPost + '</div>');
+    }
+    else {
+      $('#chats').append('<div><a href="javascript:void(0)">' + 
+                        message.username + '</a>: ' + 
+                        messageToPost + '</div>');
+    }
   }, 
 
   renderRoom: function(room) {
@@ -70,7 +84,7 @@ var app = {
 
   handleSubmit: function() {
     app.send();
-  }
+  },  
 
 };
 
@@ -85,8 +99,22 @@ $(document).ready( function () {
     app.handleSubmit();
   });
 
-
   $('.retrieve').click( function () {
     app.fetch();
   });
+
 });
+
+$(document).on('click', 'a', function(event) {
+  var name = event.currentTarget.textContent;
+  if (!app.friends.includes(name)) {
+    app.friends.push(name);
+  }
+})
+
+
+
+
+
+
+
