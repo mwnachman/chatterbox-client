@@ -1,7 +1,8 @@
 var app = {
 
-  mainURL: 'https://api.parse.com/1/classes/messages',
-  server: 'https://api.parse.com/1/classes/messages?order=-createdAt',
+  mainURL: 'http://127.0.0.1:3000/classes/messages',
+  server: 'http://127.0.0.1:3000/classes/messages',
+// ?order=-createdAt
 
   friends: [],
 
@@ -23,9 +24,9 @@ var app = {
   send: function (input) {
     
     var message = input ? input : this.callback();
-
     $.ajax({
       url: this.mainURL,
+      port: '3000',
       type: 'POST',
       dataType: 'json',
       data: JSON.stringify(message),
@@ -39,6 +40,7 @@ var app = {
   fetch: function () {
     $.ajax({
       url: this.server,
+      port: '3000',
       type: 'GET',
       success: function (data) {
         console.log(data);
