@@ -1,7 +1,7 @@
 var app = {
 
   mainURL: 'http://127.0.0.1:3000/classes/messages',
-  server: 'http://127.0.0.1:3000/classes/messages',
+  server: 'http://127.0.0.1:3000/classes/messages?order=-createdAt',
 // ?order=-createdAt
 
   friends: [],
